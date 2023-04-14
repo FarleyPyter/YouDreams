@@ -60,7 +60,20 @@
       .result p {
         margin-bottom: 10px;
       }
-    </style>
+   <style>
+  .form-container {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .form-group {
+    margin-bottom: 10px;
+  }
+  .result {
+    margin-top: 20px;
+    display: none;
+  }
+</style>
   </head>
   <body>
     <div class="form-container">
@@ -82,7 +95,8 @@
       const input = document.getElementById("input-field");
       const result = document.getElementById("result-field");
       const resultSection = document.querySelector(".result");
-      
+      const personality = "Você é uma ia que interpreta sonhos baseados na psicologia e ajuda a pessoa a entender a si mesma e aumentar seu potencial.";
+
       form.addEventListener("submit", submitForm);
 
       async function submitForm(event) {
@@ -91,12 +105,19 @@
         const response = await fetch('/v1/chat/completions', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(data)
+          body: JSON.stringify({
+            prompt: `Personalidade do chat: ${personality}\nInterprete o sonho: ${data.input}.`,
+            temperature: 0.5,
+            max_tokens: 50,
+            stop: '\n'
           })
-        const text = await response.text();
-        result.textContent = text;
+        });
+        const text = await response.json();
+        const message = text.choices[0].text.trim().replace(personality, ''); 
+        result.textContent = `Interpretação do sonho: ${message}`;
         resultSection.style.display = "block";
       }
     </script>
   </body>
+
 </html>
