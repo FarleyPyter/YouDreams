@@ -90,7 +90,7 @@
         const data = { input: input.value };
         const response = await fetch('/api/request', {
           method: 'POST',
-          headers: {'Content-Type': 'application/json'},
+          headers: {'Content-Type': '/v1/chat/completions'},
           body: JSON.stringify(data)
           })
         const json = await response.json();
