@@ -12,4 +12,4 @@ module.exports = {
     keepAlive: true,
   },
   reactStrictMode: true,
-};
+}; 
